@@ -5,5 +5,5 @@
 
 package xyz.le30r.concise.exception
 
-class AnnotationMissedException(override val message: String?) : Exception(message) {
+class MissingAnnotationException(override val message: String?) : Exception(message) {
 }

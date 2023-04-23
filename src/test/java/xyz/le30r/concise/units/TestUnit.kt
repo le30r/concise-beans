@@ -5,5 +5,4 @@
 
 package xyz.le30r.concise.units
 
-interface TestUnit {
-}
+interface TestUnit

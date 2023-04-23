@@ -8,6 +8,7 @@ package xyz.le30r.concise.loader
 import xyz.le30r.concise.utils.findAllClassesUsingClassLoader
 import xyz.le30r.concise.annotation.Unit
 import xyz.le30r.concise.container.SimpleContainer
+import xyz.le30r.concise.processor.FieldInjectionBeanPostProcessor
 
 class SimpleContainerLoader : Loader<SimpleContainer> {
     private val container = SimpleContainer()
@@ -18,6 +19,13 @@ class SimpleContainerLoader : Loader<SimpleContainer> {
         for (`package` in packages) {
             collectBeans(`package`)
         }
+        val fieldInjectionBeanPostProcessor =  FieldInjectionBeanPostProcessor(container)
+        for (beans in container.getAllBeans()) {
+            for (bean in beans.value!!) {
+                fieldInjectionBeanPostProcessor.postInit(beans.key, bean ?: continue)
+            }
+        }
+
         return container
     }
 
@@ -30,7 +38,6 @@ class SimpleContainerLoader : Loader<SimpleContainer> {
                 for (`interface` in clazz.interfaces) {
                     container.addBean(`interface`, bean)
                 }
-
             }
         }
     }
